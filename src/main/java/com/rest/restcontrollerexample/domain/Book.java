@@ -1,0 +1,48 @@
+package com.rest.restcontrollerexample.domain;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import java.time.LocalDateTime;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor
+@Getter
+@Entity
+@Table
+public class Book {
+
+    @Id
+    @GeneratedValue
+    private Integer idx;
+
+    @Column
+    private String title;
+
+    @Column
+    @JsonIgnore //Projection에서 사용될 경우 적용되지 않는다(Projection 우선적용)
+    private Integer soldCount;
+
+    @Column
+    private LocalDateTime publishedAt;
+
+    @ManyToOne(optional = false)
+    private Writer writer;
+
+    @Builder
+    public Book(String title, Integer soldCount, LocalDateTime publishedAt, Writer writer) {
+        this.title = title;
+        this.soldCount = soldCount;
+        this.publishedAt = publishedAt;
+        this.writer = writer;
+    }
+}
